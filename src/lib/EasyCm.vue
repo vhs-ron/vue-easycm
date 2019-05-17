@@ -5,7 +5,7 @@
     <ul class="cm-ul cm-ul-1 easy-cm-ul"
         :class="underline?'cm-underline':''">
       <li v-for="(item, index) in list" :style="liStyle">
-        <div @click.stop="item.action ? item.action : callback([index])"
+        <div @click="item.action"
              :class="firstLeft?'cm-left':''">
           <i :class="item.icon"></i>
           <span>{{item.text}}</span>
@@ -21,7 +21,7 @@
             v-if="item.children && item.children.length > 0" >
           <li v-for="(second, si) in item.children"
               :style="liStyle">
-            <div @click.stop="second.action ? second.action : callback([index,si])"
+            <div @click.stop="second.action"
                  :class="secondLeft?'cm-left':''">
               <i :class="second.icon"></i>
               <span>{{second.text}}</span>
@@ -37,7 +37,7 @@
                 v-if="second.children && second.children.length > 0">
               <li v-for="(third, ti) in second.children"
                   :style="liStyle">
-                <div @click.stop="third.action ? third.action : callback([index,si,ti])">
+                <div @click.stop="third.action">
                   <i :class="third.icon"></i>
                   <span>{{third.text}}</span>
                 </div>
