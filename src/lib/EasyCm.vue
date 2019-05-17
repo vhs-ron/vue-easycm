@@ -5,7 +5,7 @@
     <ul class="cm-ul cm-ul-1 easy-cm-ul"
         :class="underline?'cm-underline':''">
       <li v-for="(item, index) in list" :style="liStyle">
-        <div @click="item.action"
+        <div @click.stop="callback(item.action)"
              :class="firstLeft?'cm-left':''">
           <i :class="item.icon"></i>
           <span>{{item.text}}</span>
@@ -21,7 +21,7 @@
             v-if="item.children && item.children.length > 0" >
           <li v-for="(second, si) in item.children"
               :style="liStyle">
-            <div @click.stop="second.action"
+            <div @click.stop="callback(second.action)"
                  :class="secondLeft?'cm-left':''">
               <i :class="second.icon"></i>
               <span>{{second.text}}</span>
@@ -37,7 +37,7 @@
                 v-if="second.children && second.children.length > 0">
               <li v-for="(third, ti) in second.children"
                   :style="liStyle">
-                <div @click.stop="third.action">
+                <div @click.stop="callback(third.action)">
                   <i :class="third.icon"></i>
                   <span>{{third.text}}</span>
                 </div>
@@ -171,8 +171,8 @@
           top: cy > bh ? -(this.list[i].children[si].children.length - 1) * this.itemHeight + 'px' : 0
         }
       },
-      callback (indexList){
-        this.$emit('ecmcb',indexList)
+      callback (actionItem){
+        this.$emit('ecmcb',actionItem)
       }
     }
   }
