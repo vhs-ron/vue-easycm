@@ -172,7 +172,7 @@
         }
       },
       callback (actionItem){
-        this.$emit('ecmcb',actionItem)
+        this.$emit('actionCallback',actionItem)
       }
     }
   }
