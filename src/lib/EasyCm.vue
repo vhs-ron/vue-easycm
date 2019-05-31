@@ -5,54 +5,53 @@
     <ul class="cm-ul cm-ul-1 easy-cm-ul" :class="underline ? 'cm-underline' : ''">
       <li v-for="(item, index) in list" :style="liStyle" :key="'level1-' + index">
         <div v-if="item.children && !item.action" :class="firstLeft ? 'cm-left' : ''">
-          <i :class="item.icon" />
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <svg class="icon" aria-hidden="true" v-if="arrow && item.children && item.children.length > 0">
-            <use xlink:href="#icon-youjiantou"></use>
-          </svg>
+          <icon icon='caret-right' />
         </div>
         <div v-else-if="item.children && item.action" @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
-          <i :class="item.icon" />
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <svg class="icon" aria-hidden="true" v-if="arrow && item.children && item.children.length > 0">
-            <use xlink:href="#icon-youjiantou"></use>
-          </svg>
+          <icon icon='caret-right' />
         </div>
         <div v-else @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
-          <i :class="item.icon" />
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
         </div>
         <!--second-->
         <ul class="cm-ul cm-ul-2 easy-cm-ul" :style="secondBorderCheck(index)" :class="underline ? 'cm-underline' : ''" v-if="item.children && item.children.length > 0" >
           <li v-for="(second, si) in item.children" :key="'level2-' + si" :style="liStyle">
             <div v-if="second.children && !second.action" :class="secondLeft?'cm-left':''">
-              <i :class="second.icon" />
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <svg class="icon" aria-hidden="true" v-if="arrow && second.children && second.children.length > 0">
-                  <use xlink:href="#icon-youjiantou"></use>
-              </svg>
+              <icon icon='caret-right' />
             </div>
             <div v-else-if="second.children && second.action" @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft ? 'cm-left' : ''">
-              <i :class="second.icon" />
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <svg class="icon" aria-hidden="true" v-if="arrow && second.children && second.children.length > 0">
-                  <use xlink:href="#icon-youjiantou"></use>
-              </svg>
+              <icon icon='caret-right' />
             </div>
             <div v-else @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft?'cm-left':''">
-              <i :class="second.icon" />
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
             </div>
             <!--third-->
             <ul class="cm-ul cm-ul-3 easy-cm-ul" :style="thirdBorderCheck(index,si)" :class="underline?'cm-underline':''" v-if="second.children && second.children.length > 0">
               <li v-for="(third, ti) in second.children" :key="'level3-' + ti" :style="liStyle">
                 <div @click.stop="callback({ action: third.action, data: third.data })">
-                  <i :class="third.icon" />
+                  <i v-if="!importedFA5" :class="third.icon" />
+                  <icon v-if="importedFA5" :icon="third.icon" :class="third.class" />
                   <span v-text="third.text" />
                 </div>
               </li>
             </ul>
-        </li>
+          </li>
         </ul>
       </li>
     </ul>
@@ -64,6 +63,7 @@
     name: 'EasyCm',
     data() {
       return {
+        importedFA5: false,
         // 是否显示
         show: false,
         // 触发点坐标
@@ -113,7 +113,14 @@
       // 边界距离
       borderWidth: {
         default: 6
+      },
+      // set to true if you are importing Font Awesome 5 icons into your project
+      FA5: {
+        default: false
       }
+    },
+    created() {
+      this.importedFA5 = this.FA5
     },
     mounted() {
       this.$root.$on('easyAxis', (axis) => {
