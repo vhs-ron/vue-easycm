@@ -3,7 +3,7 @@
     <svg aria-hidden="true" style="position: absolute; width: 0px; height: 0px; overflow: hidden;"><symbol id="icon-youjiantou" viewBox="0 0 1024 1024"><path d="M288.791335 65.582671l446.41733 446.417329-446.41733 446.417329z"></path></symbol></svg>
     <!--first-->
     <ul class="cm-ul cm-ul-1 easy-cm-ul" :class="underline ? 'cm-underline' : ''">
-      <li v-for="(item, index) in list" :style="liStyle" :key="'level1-' + index">
+      <li v-for="(item, index) in list" :style="liStyle" :key="'level1-' + index" :class="item.separator ? 'cm-separator' : ''">
         <div v-if="item.children && !item.action" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5" :class="item.icon" />
           <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
@@ -23,7 +23,7 @@
         </div>
         <!--second-->
         <ul class="cm-ul cm-ul-2 easy-cm-ul" :style="secondBorderCheck(index)" :class="underline ? 'cm-underline' : ''" v-if="item.children && item.children.length > 0" >
-          <li v-for="(second, si) in item.children" :key="'level2-' + si" :style="liStyle">
+          <li v-for="(second, si) in item.children" :key="'level2-' + si" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
             <div v-if="second.children && !second.action" :class="secondLeft?'cm-left':''">
               <i v-if="!importedFA5" :class="second.icon" />
               <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
@@ -43,7 +43,7 @@
             </div>
             <!--third-->
             <ul class="cm-ul cm-ul-3 easy-cm-ul" :style="thirdBorderCheck(index,si)" :class="underline?'cm-underline':''" v-if="second.children && second.children.length > 0">
-              <li v-for="(third, ti) in second.children" :key="'level3-' + ti" :style="liStyle">
+              <li v-for="(third, ti) in second.children" :key="'level3-' + ti" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
                 <div @click.stop="callback({ action: third.action, data: third.data })">
                   <i v-if="!importedFA5" :class="third.icon" />
                   <icon v-if="importedFA5" :icon="third.icon" :class="third.class" />
@@ -264,7 +264,7 @@
     transform: translateY(-50%) rotate(180deg) ;
     left: 0;
   }
-  .cm-underline li div:after{
+  .cm-underline li div:after, .cm-separator div:after{
     content: '';
     width: 90%;
     position: absolute;
@@ -274,7 +274,7 @@
     background-color: #cccccc;
     z-index: 10001;
   }
-  .cm-underline li div:hover:after,.cm-underline>li:first-child>div:after{
+  .cm-underline li div:hover:after,.cm-underline>li:first-child>div:after, .cm-separator div:hover:after {
     display: none;
   }
 </style>
