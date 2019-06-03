@@ -6,19 +6,19 @@
       <li v-for="(item, index) in list" :style="liStyle" :key="'level1-' + index" :class="item.separator ? 'cm-separator' : ''">
         <div v-if="item.children && !item.action" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5" :class="item.icon" />
-          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <fa-icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <icon icon='caret-right' />
+          <fa-icon icon='caret-right' />
         </div>
         <div v-else-if="item.children && item.action" @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5" :class="item.icon" />
-          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <fa-icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <icon icon='caret-right' />
+          <fa-icon icon='caret-right' />
         </div>
         <div v-else @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5" :class="item.icon" />
-          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <fa-icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
         </div>
         <!--second-->
@@ -26,19 +26,19 @@
           <li v-for="(second, si) in item.children" :key="'level2-' + si" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
             <div v-if="second.children && !second.action" :class="secondLeft?'cm-left':''">
               <i v-if="!importedFA5" :class="second.icon" />
-              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <fa-icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <icon icon='caret-right' />
+              <fa-icon icon='caret-right' />
             </div>
             <div v-else-if="second.children && second.action" @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft ? 'cm-left' : ''">
               <i v-if="!importedFA5" :class="second.icon" />
-              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <fa-icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <icon icon='caret-right' />
+              <fa-icon icon='caret-right' />
             </div>
             <div v-else @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft?'cm-left':''">
               <i v-if="!importedFA5" :class="second.icon" />
-              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <fa-icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
             </div>
             <!--third-->
@@ -46,7 +46,7 @@
               <li v-for="(third, ti) in second.children" :key="'level3-' + ti" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
                 <div @click.stop="callback({ action: third.action, data: third.data })">
                   <i v-if="!importedFA5" :class="third.icon" />
-                  <icon v-if="importedFA5" :icon="third.icon" :class="third.class" />
+                  <fa-icon v-if="importedFA5" :icon="third.icon" :class="third.class" />
                   <span v-text="third.text" />
                 </div>
               </li>
