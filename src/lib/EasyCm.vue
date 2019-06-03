@@ -2,48 +2,56 @@
   <div class="cm-container" :style="axisComputed" v-if="show">
     <svg aria-hidden="true" style="position: absolute; width: 0px; height: 0px; overflow: hidden;"><symbol id="icon-youjiantou" viewBox="0 0 1024 1024"><path d="M288.791335 65.582671l446.41733 446.417329-446.41733 446.417329z"></path></symbol></svg>
     <!--first-->
-    <ul class="cm-ul cm-ul-1 easy-cm-ul"
-        :class="underline?'cm-underline':''">
-      <li v-for="(item, index) in list" :style="liStyle">
-        <div @click.stop="callback({ action: item.action, data: item.data })"
-             :class="firstLeft?'cm-left':''">
-          <i :class="item.icon"></i>
-          <span>{{item.text}}</span>
-          <svg class="icon" aria-hidden="true"
-               v-if="arrow && item.children && item.children.length > 0">
-              <use xlink:href="#icon-youjiantou"></use>
-          </svg>
+    <ul class="cm-ul cm-ul-1 easy-cm-ul" :class="underline ? 'cm-underline' : ''">
+      <li v-for="(item, index) in list" :style="liStyle" :key="'level1-' + index" :class="item.separator ? 'cm-separator' : ''">
+        <div v-if="item.children && !item.action" :class="firstLeft ? 'cm-left' : ''">
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <span v-text="item.text" />
+          <icon icon='caret-right' />
+        </div>
+        <div v-else-if="item.children && item.action" @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <span v-text="item.text" />
+          <icon icon='caret-right' />
+        </div>
+        <div v-else @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
+          <i v-if="!importedFA5" :class="item.icon" />
+          <icon v-if="importedFA5" :icon="item.icon" :class="item.class" />
+          <span v-text="item.text" />
         </div>
         <!--second-->
-        <ul class="cm-ul cm-ul-2 easy-cm-ul"
-            :style="secondBorderCheck(index)"
-            :class="underline?'cm-underline':''"
-            v-if="item.children && item.children.length > 0" >
-          <li v-for="(second, si) in item.children"
-              :style="liStyle">
-            <div @click.stop="callback({ action: second.action, data: second.data })"
-                 :class="secondLeft?'cm-left':''">
-              <i :class="second.icon"></i>
-              <span>{{second.text}}</span>
-              <svg class="icon" aria-hidden="true"
-                   v-if="arrow && second.children && second.children.length > 0">
-                  <use xlink:href="#icon-youjiantou"></use>
-              </svg>
+        <ul class="cm-ul cm-ul-2 easy-cm-ul" :style="secondBorderCheck(index)" :class="underline ? 'cm-underline' : ''" v-if="item.children && item.children.length > 0" >
+          <li v-for="(second, si) in item.children" :key="'level2-' + si" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
+            <div v-if="second.children && !second.action" :class="secondLeft?'cm-left':''">
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <span v-text="second.text" />
+              <icon icon='caret-right' />
+            </div>
+            <div v-else-if="second.children && second.action" @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft ? 'cm-left' : ''">
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <span v-text="second.text" />
+              <icon icon='caret-right' />
+            </div>
+            <div v-else @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft?'cm-left':''">
+              <i v-if="!importedFA5" :class="second.icon" />
+              <icon v-if="importedFA5" :icon="second.icon" :class="second.class" />
+              <span v-text="second.text" />
             </div>
             <!--third-->
-            <ul class="cm-ul cm-ul-3 easy-cm-ul"
-                :style="thirdBorderCheck(index,si)"
-                :class="underline?'cm-underline':''"
-                v-if="second.children && second.children.length > 0">
-              <li v-for="(third, ti) in second.children"
-                  :style="liStyle">
+            <ul class="cm-ul cm-ul-3 easy-cm-ul" :style="thirdBorderCheck(index,si)" :class="underline?'cm-underline':''" v-if="second.children && second.children.length > 0">
+              <li v-for="(third, ti) in second.children" :key="'level3-' + ti" :style="liStyle" :class="item.separator ? 'cm-separator' : ''">
                 <div @click.stop="callback({ action: third.action, data: third.data })">
-                  <i :class="third.icon"></i>
-                  <span>{{third.text}}</span>
+                  <i v-if="!importedFA5" :class="third.icon" />
+                  <icon v-if="importedFA5" :icon="third.icon" :class="third.class" />
+                  <span v-text="third.text" />
                 </div>
               </li>
             </ul>
-        </li>
+          </li>
         </ul>
       </li>
     </ul>
@@ -55,6 +63,7 @@
     name: 'EasyCm',
     data() {
       return {
+        importedFA5: false,
         // 是否显示
         show: false,
         // 触发点坐标
@@ -104,7 +113,14 @@
       // 边界距离
       borderWidth: {
         default: 6
+      },
+      // set to true if you are importing Font Awesome 5 icons into your project
+      FA5: {
+        default: false
       }
+    },
+    created() {
+      this.importedFA5 = this.FA5
     },
     mounted() {
       this.$root.$on('easyAxis', (axis) => {
@@ -248,7 +264,7 @@
     transform: translateY(-50%) rotate(180deg) ;
     left: 0;
   }
-  .cm-underline li div:after{
+  .cm-underline li div:after, .cm-separator div:after{
     content: '';
     width: 90%;
     position: absolute;
@@ -258,7 +274,7 @@
     background-color: #cccccc;
     z-index: 10001;
   }
-  .cm-underline li div:hover:after,.cm-underline>li:first-child>div:after{
+  .cm-underline li div:hover:after,.cm-underline>li:first-child>div:after, .cm-separator div:hover:after {
     display: none;
   }
 </style>
