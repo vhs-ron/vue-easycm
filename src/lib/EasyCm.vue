@@ -8,13 +8,13 @@
           <i v-if="!importedFA5 && typeof item.icon !== 'undefined'" :class="item.icon" />
           <font-awesome-icon v-if="importedFA5 && typeof item.icon !== 'undefined'" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <font-awesome-icon icon='caret-right' />
+          <font-awesome-icon :icon="menuIcon" />
         </div>
         <div v-else-if="item.children && item.action" @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5 && typeof item.icon !== 'undefined'" :class="item.icon" />
           <font-awesome-icon v-if="importedFA5 && typeof item.icon !== 'undefined'" :icon="item.icon" :class="item.class" />
           <span v-text="item.text" />
-          <font-awesome-icon icon='caret-right' />
+          <font-awesome-icon :icon="menuIcon" />
         </div>
         <div v-else @click.stop="callback({ action: item.action, data: item.data })" :class="firstLeft ? 'cm-left' : ''">
           <i v-if="!importedFA5 && typeof item.icon !== 'undefined'" :class="item.icon" />
@@ -28,13 +28,13 @@
               <i v-if="!importedFA5 && typeof second.icon !== 'undefined'" :class="second.icon" />
               <font-awesome-icon v-if="importedFA5 && typeof second.icon !== 'undefined'" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <font-awesome-icon icon='caret-right' />
+              <font-awesome-icon :icon="menuIcon" />
             </div>
             <div v-else-if="second.children && second.action" @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft ? 'cm-left' : ''">
               <i v-if="!importedFA5 && typeof second.icon !== 'undefined'" :class="second.icon" />
               <font-awesome-icon v-if="importedFA5 && typeof second.icon !== 'undefined'" :icon="second.icon" :class="second.class" />
               <span v-text="second.text" />
-              <font-awesome-icon icon='caret-right' />
+              <font-awesome-icon :icon="menuIcon" />
             </div>
             <div v-else @click.stop="callback({ action: second.action, data: second.data })" :class="secondLeft?'cm-left':''">
               <i v-if="!importedFA5 && typeof second.icon !== 'undefined'" :class="second.icon" />
@@ -59,10 +59,13 @@
 </template>
 
 <script>
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
   export default {
     name: 'EasyCm',
     data() {
       return {
+        menuIcon: faCaretRight,
         importedFA5: false,
         // 是否显示
         show: false,
@@ -118,6 +121,9 @@
       FA5: {
         default: false
       }
+    },
+    components: {
+      FontAwesomeIcon
     },
     created() {
       this.importedFA5 = this.FA5
