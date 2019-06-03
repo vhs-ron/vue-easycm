@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library as icons } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
-icons.add(faCaretRight)
-Vue.component('icon', FontAwesomeIcon)
+library.add(faCaretRight)
+Vue.component('fa-icon', FontAwesomeIcon)
 
-export default icons
+export default library
 
 // Register Your Icons
 //
