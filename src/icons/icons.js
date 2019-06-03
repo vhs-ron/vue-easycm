@@ -16,7 +16,7 @@ export default library
 // * Add your icon to the icons.add() statement. Name must match name in import statement. Separate all by commas.
 
 // In the page
-// Use the icon component like this: <icon icon="info-circle" />
+// Use the icon component like this: <fa-icon icon="info-circle" />
 // Change the icon attribute to correspond to the icon that you registered above.
 //  The value of the icon attribute must be a kebab-case variant of your icon's variable name.
 //  All lower-case, hyphen-spaced.
