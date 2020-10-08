@@ -50,7 +50,7 @@ var VueEasyCm = require('VueEasyCm')
 
 ```
 
-###   2.Basic Usage  基础用法
+###   2. Basic Usage
 
 
 
@@ -75,7 +75,7 @@ var VueEasyCm = require('VueEasyCm')
 
 
 
-### 3.Options  配置项
+### 3. Options
 
 |    Props     | Required |      Default     |   Description   |
 | :----------: | :------: | :--------------: | :--------------: |
@@ -149,17 +149,17 @@ Additional Details：
    When an action is provided the action callback event will return the name of the action and the data to be passed to the function.
    The action and data will be returned as an object that looks as follows:
 
-   ```js
+  ```js
   {
     action: 'doSomething',
     data: {
       parameter: 1
     }
   }
-   ```
+  ```
   To trigger the action we recommend creating a triggerAction method in your component as shown below. Ensure that the action is also listed in your methods.
 
-  ```js
+  ```vue
   <div @contextmenu="$easycm($event,$root)"></div>
   <easy-cm :list="listItems" @actionCallback="triggerAction"></easy-cm>
 
