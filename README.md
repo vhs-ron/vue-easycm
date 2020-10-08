@@ -3,72 +3,60 @@
 
 
 
-### 一个简单好用的 VUE 环境菜单 (Context Menu)
+### A Simple and easy-to-use Vue Context Menu (Context Menu)
 
 ![](https://img.shields.io/npm/dw/vue-easycm.svg)
 
 
-> 更多demo:  http://boenfu.github.io/vue-easycm/
-
-
 ![http://boho.image.alimmdn.com/github/easycmdemo.gif?t=1524493555136](http://boho.image.alimmdn.com/github/easycmdemo.gif?t=1524493555136)
 
-* 配置简单 自定义程度高
+* Simple and customizable configuration
 
-* 多种引用方式
+* Max 3 levels of menus
 
-* 最高三层菜单
+* Font Awesome 5 support
 
-* 可添加字体图标
-
-* 边界检测
-
-
+* Border Detection
 
 
 ## Install
 
 
-
 ```
-npm install vue-easycm --save
+npm install git+https://github.com/vhs-ron/vue-easycm --save
 ```
-
 
 
 ## Use
 
-###   1.Import  导入
+###   1.Import
 
 
 
 ```js
-ES6
 
-// 方法1.通过use挂载
+// method 1 ES6 import
 import VueEasyCm from 'vue-easycm'
 Vue.use(VueEasyCm)
 
 
-//  方法2.通过require 导入
+//  method 2 require
 var VueEasyCm = require('VueEasyCm')
 
 
 
-// 方法3.或者直接导入js文件
+// method 3 import the js file directly to the document head
 <script src="./dist/vue-easycm.js"></script>
 
 ```
-
-
 
 ###   2.Basic Usage  基础用法
 
 
 
-1. 在需要触发 环境菜单 的容器标签上加上（固定写法）
+1. Call `$easycm($event, $root)` using the appropriate event trigger on the element that you want to trigger the context menu.
 
-   例：
+   Example：
 
    ```vue
    <div @contextmenu="$easycm($event,$root)"></div>
@@ -76,9 +64,9 @@ var VueEasyCm = require('VueEasyCm')
 
    ​
 
-2. 任意位置导入组件（选项数组必传，格式见配置项）
+2. Place the context menu component in your template. Note, the list prop is required.
 
-   例：
+   Example：
 
    ```vue
    <easy-cm :list=""></easy-cm>
@@ -89,11 +77,11 @@ var VueEasyCm = require('VueEasyCm')
 
 ### 3.Options  配置项
 
-|    选项名    | 是否必须 |      默认值      |       介绍       |
+|    Props     | Required |      Default     |   Description   |
 | :----------: | :------: | :--------------: | :--------------: |
-|    :list     |   true   |        无        |     选项数组     |
-|     :tag     |  false   |        无        | 配置多个时的标记 |
-|    @ecmcb    |  false   |        无        | 返回触发元素序号 |
+|    :list     |   true   |        none        |     Array of menu items   |
+|     :tag     |  false   |        none       | a name for the menu when configuring multiple context menus |
+|@actionCallback|  false   |       none        | 返回触发元素序号 |
 |  :underline  |  false   |      false       |  是否开启下划线  |
 |    :arrow    |  false   |      false       |   是否开启箭头   |
 |   :border    |  false   |       true       | 是否开启边界检测 |
@@ -103,29 +91,47 @@ var VueEasyCm = require('VueEasyCm')
 |   :offset    |  false   | {   x: 6, y: 2 } |   显示点偏移量   |
 | :borderWidth |  false   |        6         |     边界距离     |
 
-详细介绍：
+Additional Details：
 
-1. 数组格式如下
+1. The list prop is formatted as follows:
 
    ```js
-   [{
-         text: 'Play Now',
-         icon: 'iconfont icon-bofang',  //选填 字体图标 class
-         children: [] //选填
-   }]
+    [
+      {
+        text: 'Text to appear in each menu item',
+        icon: 'fas fa-play',  // optional FontAwesome5 class
+        class: 'purple-items', // optional class to apply to menu items
+        separator: false, // optional boolean to determine if the menu shows a line separating menu items
+        action: 'doSomething', // optional string name a function to call when menu item is selected
+        data: {} // optional object data to pass to callback action when triggered
+      },
+      {
+        text: 'Sub-menu',
+        icon: 'fas fa-play',
+        children: [
+          {
+            text: 'sub-menu item',
+            icon: 'fas fa-play',
+            separator: false,
+            action: 'doSomethingElse',
+            data: {}
+          }
+        ]
+      }
+    ]
    ```
 
-   *嵌套的子项格式一致
+   *Nested sub-items are formatted exactly the same.
 
    ​
 
-2. tag --> 标记
+2. Tag Prop
 
-   需要配置多个菜单时添加 tag , 类似取个 id
+   Similar to an id, the tag prop identifies different context menus when multiple are used.
 
-   此时 @contextmenu="\$easycm(\$event,\$root,[tag])" 需要加上 tag 的值
+   In this example @contextmenu="\$easycm(\$event,\$root,[tag])" requires a tag to identify which context menu to display.
 
-   如:
+   Example:
 
    ```vue
    <div @contextmenu="$easycm($event,$root,1)">
@@ -135,50 +141,44 @@ var VueEasyCm = require('VueEasyCm')
    <easy-cm :tag="2"></easy-cm>
    ```
 
-   这个时候 在 p 元素上会触发 tag 为 2 的菜单
-
-   div 的其他部分会触发 tag 为 1 的菜单
-
+   When the p element is selected, the context menu with tag 2 will display. When the div is selected, context menu with tag 1 will be displayed.
    ​
 
-3. ecmcb --> 回调函数
+3. @actionCallback Event
 
-   解释：返回触发的序号数组，便于触发相应逻辑
+   When an action is provided the action callback event will return the name of the action and the data to be passed to the function.
+   The action and data will be returned as an object that looks as follows:
 
-   如:
+   ```js
+  {
+    action: 'doSomething',
+    data: {
+      parameter: 1
+    }
+  }
+   ```
+  To trigger the action we recommend creating a triggerAction method in your component as shown below. Ensure that the action is also listed in your methods.
 
-   ​	[0] 代表第一层的第一项
+  ```js
+  <div @contextmenu="$easycm($event,$root)"></div>
+  <easy-cm :list="listItems" @actionCallback="triggerAction"></easy-cm>
 
-   ​	[0,1] 代表第一层的第一项的第二个子项
+  .
+  .
+  .
 
-   详见 demo code
+  methods: {
+    triggerAction(actionData) {
+      this[actionData.action](actionData.data)
+    }
+  }
+  ```
 
-   ​
+## Custom Styling
 
-4. 边界检测 见 demo gif
-
-   ​
-
-5. offset  -->  显示点偏移量
-
-   解释: 菜单显示位置的左上角离鼠标的距离
-
-   如: {x:10,y:10}
-
-   ​
-
-   *数值参数均无需带单位
-
-
-
-
-
-## 自定义样式
-
-编写 预置的空 easy-cm-ul 样式类来修改样式
+By default the ul tag has the class `easy-cm-ul`. To modify the style, you can target tags using this class in your css as shown below.
 
 ```html
-// 代码结构
 <ul class="easy-cm-ul">
     <li>
       <div></div>
@@ -196,7 +196,7 @@ var VueEasyCm = require('VueEasyCm')
   </ul>
 ```
 
-例如：
+Example：
 
 ![http://boho.image.alimmdn.com/github/p1.png?t=1524498301156](http://boho.image.alimmdn.com/github/p1.png)
 
@@ -206,14 +206,12 @@ var VueEasyCm = require('VueEasyCm')
 
 ## Demo Code
 
-
-
 ```vue
 // gif 图源码
 <template>
   <div id="app" @contextmenu="$easycm($event,$root)">
     <easy-cm :list="cmList"
-             @ecmcb="test"
+             @actionCallback="triggerAction"
              :underline="true"
              :arrow="true">
     </easy-cm>
@@ -224,45 +222,31 @@ export default {
   name: 'app',
   data () {
     return {
-        // 配置数组
       cmList: [{
         text: 'Play Now',
-        icon: 'iconfont icon-bofang'
-      },{
+        icon: 'fas fa-play'
+        action: 'play',
+        data: {}
+      },
+      {
         text: 'Play Next',
-        icon: 'iconfont icon-xiayishou'
-      },{
-        text: 'More',
-        children: [{
-          text: 'Download',
-          children: []
-        },{
-          text: 'Report'
-        },{
-          text: 'Other',
-          icon: 'iconfont icon-bofang',
-          children:[{
-            text: 'Other-1'
-          },{
-            text: 'Other-2'
-          },{
-            text: 'Other-3'
-          }]
-        }]
+        icon: 'fas fa-step-forward',
+        action: 'playNext',
+        data: {
+          videoId: 'next1'
+        }
       }]
     }
   },
   methods:{
-      // 回调函数
-    test(indexList){
-      switch (indexList[0]){
-        case 0:
-          console.log('立即播放');
-          break
-        case 1:
-          console.log('下一首播放')
-          break
-      }
+    triggerAction(actionData){
+      this[actionData.action](actionData.data)
+    },
+    play() {
+      // code for the play method here
+    },
+    playNext(dataObject) {
+      // code for playNext method here. To use the videoId passed call dataObject.videoId
     }
   }
 }
